@@ -13,12 +13,13 @@ class Startseite(StartseiteTemplate):
     
     print(anvil.server.call("say_hello", "sauron"))
     self.jugendherberge_drop_down.items = anvil.server.call('get_jugendherbergen')
+    
+  
 
-
-    # Lösung 1
-    # items = []
-    # for x in anvil.server.call('get_jugendherbergen'):
-    #   items.append((x[1], x[0]))
-    # self.drop_down_1.items = items
+  def drop_down_1_change(self, **event_args):
+    """This method is called when an item is selected"""
+    jid = self.jugendherberge_drop_down.items[self.jugendherberge_drop_down.selected_value - 1][1]
+    print(jid)
+    anvil.server.call("get_zimmer_for_jugendherberge", jid)
       
     
