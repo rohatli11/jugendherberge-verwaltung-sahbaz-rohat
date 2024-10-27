@@ -1,7 +1,23 @@
 components:
 - components:
+  - layout_properties: {grid_position: 'OKJVAL,GHTTBI'}
+    name: label_1
+    properties: {text: Jugendherberge, visible: true}
+    type: Label
+  - layout_properties: {grid_position: 'OKJVAL,SOANGW'}
+    name: label_2
+    properties: {text: ' Zimmer'}
+    type: Label
+  - layout_properties: {grid_position: 'OKJVAL,CEHEDL'}
+    name: label_3
+    properties: {text: '     Startdatum'}
+    type: Label
+  - layout_properties: {grid_position: 'OKJVAL,YCMCYS'}
+    name: label_4
+    properties: {text: '               Enddatum'}
+    type: Label
   - event_bindings: {change: drop_down_1_change}
-    layout_properties: {grid_position: 'KTJUVS,GWLVOQ'}
+    layout_properties: {grid_position: 'MCGUND,AXDSUZ'}
     name: jugendherberge_drop_down
     properties: {}
     type: DropDown
@@ -32,7 +48,7 @@ components:
     type: DataGrid
   layout_properties: {slot: default}
   name: content_panel
-  properties: {col_widths: '{"DBNNRP":30,"ZHQWEC":15,"LVBHOY":15}'}
+  properties: {col_widths: '{"DBNNRP":20,"ZHQWEC":15,"LVBHOY":15,"AXDSUZ":25,"GHTTBI":20,"SOANGW":15,"CEHEDL":10,"YCMCYS":15}'}
   type: ColumnPanel
 - layout_properties: {slot: nav-right}
   name: navbar_links
