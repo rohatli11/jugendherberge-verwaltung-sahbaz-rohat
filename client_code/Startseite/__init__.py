@@ -21,5 +21,6 @@ class Startseite(StartseiteTemplate):
     jid = self.jugendherberge_drop_down.items[self.jugendherberge_drop_down.selected_value - 1][1]
     print(jid)
     anvil.server.call("get_zimmer_for_jugendherberge", jid)
+
       
     

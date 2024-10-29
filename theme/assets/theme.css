@@ -3,6 +3,16 @@
  **/
 
 /* Stop panel-cols cutting off drop shadows */
+
+#rahmenAnmeldungg {
+    background-color: #e0e0e0; /* Set your desired color here */
+    border-radius: 8px; /* Optional: add rounded corners */
+    border: 1px solid #d0d0d0; /* Optional: change border color */
+    display: flex;
+    justify-content: flex-end; /* Moves buttons to the right */
+    padding: 10px; /* Optional: add padding around the buttons */
+}
+
 .anvil-panel-col {
   padding-bottom: 10px;
   margin-bottom: -10px;
