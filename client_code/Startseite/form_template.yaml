@@ -54,7 +54,7 @@ components:
     - name: repeating_panel_1
       properties: {item_template: Startseite.RowTemplate2}
       type: RepeatingPanel
-    layout_properties: {grid_position: 'BALURH,HHTQRB'}
+    layout_properties: {grid_position: 'JTUUBA,BZQLVT'}
     name: data_grid_1
     properties:
       columns:
