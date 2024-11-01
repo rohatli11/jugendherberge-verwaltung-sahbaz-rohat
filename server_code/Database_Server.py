@@ -22,18 +22,43 @@ def say_hello(name):
 def get_jugendherbergen():
   conn = sqlite3.connect(data_files['jugendherbergen_verwaltung.db'])
   cursor = conn.cursor()
-  res = list(cursor.execute("SELECT name, JID FROM jugendherbergen"))
+  res = list(cursor.execute("SELECT name, ID_jugendh FROM Jugendherberge"))
   conn.close()
   print(res)
   return res
 
+@anvil.server.callable
+def get_benutzer():
+  conn = sqlite3.connect(data_files['jugendherbergen_verwaltung.db'])
+  cursor = conn.cursor()
+  res = list(cursor.execute("SELECT vorname, ID_benutzer FROM Benutzer"))
+  conn.close()
+  print(res)
+  return res
 
 @anvil.server.callable
 def get_zimmer_for_jugendherberge(jid, columns="*"):
   conn = sqlite3.connect(data_files['jugendherbergen_verwaltung.db'])
   cursor = conn.cursor()
-  res = list(cursor.execute(f"SELECT {columns} FROM zimmer WHERE JID={jid}"))
+  res = list(cursor.execute(f"SELECT {columns} FROM Zimmer WHERE ID_jugendh={jid}"))
   conn.close()
   print(res)
   return res
+
+@anvil.server.callable
+def get_preiskategorie_for_benutzer(bid):
+    conn = sqlite3.connect(data_files['jugendherbergen_verwaltung.db'])
+    cursor = conn.cursor()
+    res = list(cursor.execute(f"SELECT Preiskategorie.name, Preiskategorie.preiskategorie FROM Preiskategorie JOIN BenutzerPreiskategorie ON Preiskategorie.ID_preis = BenutzerPreiskategorie.ID_preis WHERE BenutzerPreiskategorie.ID_benutzer = {bid}"))
+    conn.close()  
+    print(res)
+    if res:
+        formatted_results = []
+        for row in res:
+            name, preiskategorie = row  # Unpack the tuple
+            preiskategorie = int(preiskategorie)
+            formatted_results.append(f"{name}: {preiskategorie}€")
+        return "\n".join(formatted_results)  # Join results into a single string
+    else:
+        return "Keine Preiskategorie gefunden"
    

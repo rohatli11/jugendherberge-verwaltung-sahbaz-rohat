@@ -5,7 +5,7 @@ components:
       name: label_2
       properties: {text: Benutzer}
       type: Label
-    - layout_properties: {grid_position: 'TPJZYI,DHBPEN IUWFTV,MEUDLM'}
+    - layout_properties: {grid_position: 'IUWFTV,MEUDLM'}
       name: label_5
       properties: {text: Preiskategorie}
       type: Label
@@ -13,14 +13,16 @@ components:
       name: label_6
       properties: {text: Weitere Benutzer}
       type: Label
-    - layout_properties: {grid_position: 'DSZPEZ,MLLARJ'}
-      name: drop_down_1
+    - event_bindings: {change: benutzer_drop_down_change}
+      layout_properties: {grid_position: 'DSZPEZ,MLLARJ'}
+      name: benutzer_drop_down
       properties: {}
       type: DropDown
-    - layout_properties: {grid_position: 'DSZPEZ,WYBRHM'}
-      name: drop_down_2
-      properties: {}
-      type: DropDown
+    - data_bindings: []
+      layout_properties: {full_width_row: false, grid_position: 'DSZPEZ,RYYPME', row_background: 'theme:Primary'}
+      name: preiskategorie_label
+      properties: {bold: true, font_size: null, italic: false, underline: true}
+      type: Label
     - layout_properties: {grid_position: 'DSZPEZ,OOLCTA'}
       name: drop_down_3
       properties: {}
@@ -49,26 +51,26 @@ components:
     properties: {}
     type: DropDown
   - layout_properties: {grid_position: 'MCGUND,ZHQWEC'}
-    name: date_picker_1
+    name: start_datum_picker
     properties: {}
     type: DatePicker
   - layout_properties: {grid_position: 'MCGUND,LVBHOY'}
-    name: date_picker_2
+    name: end_datum_picker
     properties: {}
     type: DatePicker
   - components:
     - name: repeating_panel_1
       properties: {item_template: Startseite.RowTemplate2}
       type: RepeatingPanel
-    layout_properties: {grid_position: 'JTUUBA,BZQLVT'}
-    name: data_grid_1
+    layout_properties: {full_width_row: false, grid_position: 'JTUUBA,BZQLVT', row_background: ''}
+    name: zimmer_grid
     properties:
       columns:
       - {data_key: zimmerNR, id: JKSDUP, title: Zimmernummer}
       - {data_key: BettAZ, id: VJQQOR, title: Bettanzahl}
       - {data_key: PreisPN, id: OJLQEN, title: Preis pro Nacht}
       - {data_key: JugendHG, id: NMFMWX, title: Jugenherberge}
-      - {data_key: column_1, expand: true, id: NKSIYH, title: Buchen button}
+      - {data_key: BuchBTN, expand: false, id: NKSIYH, title: Buchen button}
     type: DataGrid
   layout_properties: {slot: default}
   name: content_panel
