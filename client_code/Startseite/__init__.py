@@ -10,7 +10,6 @@ class Startseite(StartseiteTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
-    self.registrieren_button.role = "register-button"
 
     print(anvil.server.call("say_hello", "sauron"))
     self.jugendherberge_drop_down.items = anvil.server.call('get_jugendherbergen')
