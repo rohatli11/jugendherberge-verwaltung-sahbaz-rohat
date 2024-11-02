@@ -30,14 +30,14 @@ class Startseite(StartseiteTemplate):
   def load_rooms(self, **event_args):
     # ID der ausgewählten Jugendherberge abrufen
     jid = self.jugendherberge_drop_down.items[self.jugendherberge_drop_down.selected_value - 1][1]
-    print(jid)
-
-    rooms = anvil.server.call('get_zimmer_for_jugendherberge', jid)
-
-    self.zimmer_grid.items = [] 
-    for room in rooms:
-        self.zimmer_grid.items.append({'zimmerNR': room[0], 'BettAZ': room[1], 'PreisPN': room[2], 'JugendHG': room[3]})    
-
+    data = anvil.server.call("get_zimmer_for_jugendherberge", jid, '')
+    
+    new_row = []
+        
+    for eintrag in data:
+      add = {'zimmerNR': eintrag[0], 'BettAZ': eintrag[1], 'PreisPN': eintrag[2]}
+      new_row.append(add)
+    self.repeating_panel_1.items = new_row
   
   def benutzer_drop_down_change(self, **event_args):
     """This method is called when an item is selected"""

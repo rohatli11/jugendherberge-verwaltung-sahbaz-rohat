@@ -21,7 +21,7 @@ components:
     - data_bindings: []
       layout_properties: {full_width_row: false, grid_position: 'DSZPEZ,RYYPME', row_background: 'theme:Primary'}
       name: preiskategorie_label
-      properties: {bold: true, font_size: null, italic: false, underline: true}
+      properties: {bold: false, font_size: null, italic: false, underline: false}
       type: Label
     - layout_properties: {grid_position: 'DSZPEZ,OOLCTA'}
       name: drop_down_3
@@ -69,7 +69,6 @@ components:
       - {data_key: zimmerNR, id: JKSDUP, title: Zimmernummer}
       - {data_key: BettAZ, id: VJQQOR, title: Bettanzahl}
       - {data_key: PreisPN, id: OJLQEN, title: Preis pro Nacht}
-      - {data_key: JugendHG, id: NMFMWX, title: Jugenherberge}
       - {data_key: BuchBTN, expand: false, id: NKSIYH, title: Buchen button}
     type: DataGrid
   layout_properties: {slot: default}
