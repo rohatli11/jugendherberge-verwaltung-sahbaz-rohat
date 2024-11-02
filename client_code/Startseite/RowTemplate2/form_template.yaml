@@ -1,7 +1,7 @@
 components:
 - layout_properties: {column: NKSIYH}
-  name: outlined_button_1
-  properties: {align: left, role: outlined-button, text: Buchen}
-  type: Button
+  name: radio_button_1
+  properties: {text: ''}
+  type: RadioButton
 container: {type: DataRowPanel}
 is_package: true
