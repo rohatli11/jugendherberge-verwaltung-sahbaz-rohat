@@ -5,7 +5,7 @@ import anvil.files
 from anvil.files import data_files
 import anvil.server
 import sqlite3
- 
+
 # This is a server module. It runs on the Anvil server,
 # rather than in the user's browser.
 #
@@ -13,10 +13,7 @@ import sqlite3
 # them with @anvil.server.callable.
 # Here is an example - you can replace it with your own:
 #
-@anvil.server.callable
-def say_hello(name):
-  print("Hello, " + name + "!")
-  return 42
+
  
 @anvil.server.callable
 def get_jugendherbergen():
@@ -83,16 +80,25 @@ def get_jugendherbergen_from_id(jid):
   cursor = conn.cursor()
   res = list(cursor.execute(f"SELECT name FROM Jugendherberge WHERE ID_jugendh={jid}"))
   conn.close()
-  print(res)
   return res
 
+
+@anvil.server.callable
+def get_zimmerid_from_zimmernummer(zimmernummer):
+  conn = sqlite3.connect(data_files['jugendherbergen_verwaltung.db'])
+  cursor = conn.cursor()
+  print(zimmernummer)
+  res = list(cursor.execute("SELECT ID_zimmer, zimmernummer FROM Zimmer WHERE zimmernummer = ?", (zimmernummer,)))
+  print(res)
+  conn.close()
+  return res[0]
+
+    
 
 @anvil.server.callable
 def get_preiskategorie_for_zimmer(bid):
     conn = sqlite3.connect(data_files['jugendherbergen_verwaltung.db'])
     cursor = conn.cursor()
-    
-    # Fetch name and ID of the price category for the specified user
     res = list(cursor.execute("""
         SELECT Preiskategorie.name, Preiskategorie.ID_preis 
         FROM Preiskategorie 
@@ -101,13 +107,24 @@ def get_preiskategorie_for_zimmer(bid):
     """, (bid,)))
     
     conn.close()  
-    print(res)
     
     if res:
         formatted_results = []
         for row in res:
-            name, preis_id = row  # Unpack the tuple
-            formatted_results.append(f"{name}: ID {preis_id}")  # Show the name and ID
-        return "\n".join(formatted_results)  # Join results into a single string
+            name, preis_id = row  
+            formatted_results.append(f"{name}: ID {preis_id}")  
+        return "\n".join(formatted_results) 
     else:
         return "Keine Preiskategorie gefunden"
+
+
+@anvil.server.callable
+def add_booking(startzeit, endzeit, preis, zimmer_id, benutzer_id):
+    conn = sqlite3.connect('jugendherbergen_verwaltung.db')
+    cursor = conn.cursor()
+
+    cursor.execute('''INSERT INTO Buchung(startzeit, endzeit, preis, ID_zimmer, ID_benutzer) VALUES (?, ?, ?, ?, ?)''', (startzeit, endzeit, preis, zimmer_id, benutzer_id))
+    
+    conn.commit()
+    conn.close()
+
