@@ -86,13 +86,13 @@ class Startseite(StartseiteTemplate):
         bett_anzahl = row.get_components()[2]
         zimmer_num = row.get_components()[1]
       
-        preis = days*preiskategorie_number
+        preis = int(days) * preiskategorie_number
         
         if check_buchung.selected:
           zimmer_id = anvil.server.call('get_zimmerid_from_zimmernummer', int(zimmer_num.text))
           if zimmer_id:
-            anvil.server.call('add_booking', start_date, end_date, preis, zimmer_id, self.benutzer_drop_down.selected_value)
-            print(f"Buchung hinzugefügt für Zimmernummer {zimmer_num} mit ID {zimmer_id}")
+            anvil.server.call('add_booking', start_date, end_date, preis, zimmer_id[0], self.benutzer_drop_down.selected_value)
+            print(f"Buchung hinzugefügt für Zimmernummer {zimmer_num.text} mit ID {zimmer_id[0]}")
           else:
             alert(f"Zimmer-ID für Zimmernummer {zimmer_num} konnte nicht gefunden werden.")
 

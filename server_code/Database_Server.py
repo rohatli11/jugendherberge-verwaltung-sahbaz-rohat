@@ -120,11 +120,13 @@ def get_preiskategorie_for_zimmer(bid):
 
 @anvil.server.callable
 def add_booking(startzeit, endzeit, preis, zimmer_id, benutzer_id):
-    conn = sqlite3.connect('jugendherbergen_verwaltung.db')
+    conn = sqlite3.connect(data_files['jugendherbergen_verwaltung.db'])
     cursor = conn.cursor()
-
-    cursor.execute('''INSERT INTO Buchung(startzeit, endzeit, preis, ID_zimmer, ID_benutzer) VALUES (?, ?, ?, ?, ?)''', (startzeit, endzeit, preis, zimmer_id, benutzer_id))
-    
+    cursor.execute('''
+        INSERT INTO Buchung (startzeit, endzeit, preis, ID_zimmer, ID_benutzer) 
+        VALUES (?, ?, ?, ?, ?)
+    ''', (startzeit, endzeit, preis, zimmer_id, benutzer_id))
     conn.commit()
     conn.close()
+
 
