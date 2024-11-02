@@ -34,12 +34,11 @@ class Startseite(StartseiteTemplate):
 
     rooms = anvil.server.call('get_zimmer_for_jugendherberge', jid)
 
-    self.data_grid.items = [] 
+    self.zimmer_grid.items = [] 
     for room in rooms:
-        self.data_grid.items.append({'zimmerNR': room[0], 'BettAZ': room[1]})  
+        self.zimmer_grid.items.append({'zimmerNR': room[0], 'BettAZ': room[1], 'PreisPN': room[2], 'JugendHG': room[3]})    
 
   
-
   def benutzer_drop_down_change(self, **event_args):
     """This method is called when an item is selected"""
     selected_benutzer = self.benutzer_drop_down.selected_value
@@ -50,5 +49,12 @@ class Startseite(StartseiteTemplate):
     # Set the label text to the fetched Preiskategorie name
     self.preiskategorie_label.text = preiskategorie_name if preiskategorie_name else "Keine Preiskategorie gefunden"
 
+  def drop_down_1_change(self, **event_args):
+    jid = self.jugendherberge_drop_down.items[self.jugendherberge_drop_down.selected_value - 1][1]
+  
+    print(anvil.server.call('get_zimmer_for_jugendherberge', jid))
+
+
+  
       
     
