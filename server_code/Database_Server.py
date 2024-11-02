@@ -37,13 +37,19 @@ def get_benutzer():
   return res
 
 @anvil.server.callable
-def get_zimmer_for_jugendherberge(jid, columns="zimmernummer, bettenanzahl, preis_pro_nacht"):
+def get_zimmer_for_jugendherberge(jid, pid):
   conn = sqlite3.connect(data_files['jugendherbergen_verwaltung.db'])
   cursor = conn.cursor()
-  res = list(cursor.execute(f"SELECT zimmernummer, bettenanzahl, preis_pro_nacht FROM Zimmer WHERE ID_jugendh={jid}"))
+  res = list(cursor.execute("""
+          SELECT zimmernummer, bettenanzahl, Preiskategorie.name 
+          FROM Zimmer 
+          JOIN Preiskategorie ON Zimmer.ID_preis = Preiskategorie.ID_preis 
+          WHERE ID_jugendh = ? AND Zimmer.ID_preis = ?
+      """, (jid, pid)))    
   conn.close()
-  print(res)
   return res
+
+
 
 @anvil.server.callable
 def get_preiskategorie_for_benutzer(bid):
@@ -62,6 +68,7 @@ def get_preiskategorie_for_benutzer(bid):
     else:
         return "Keine Preiskategorie gefunden"
 
+
 @anvil.server.callable
 def get_jugendherbergen_from_id(jid):
   conn = sqlite3.connect(data_files['jugendherbergen_verwaltung.db'])
@@ -70,3 +77,29 @@ def get_jugendherbergen_from_id(jid):
   conn.close()
   print(res)
   return res
+
+
+@anvil.server.callable
+def get_preiskategorie_for_zimmer(bid):
+    conn = sqlite3.connect(data_files['jugendherbergen_verwaltung.db'])
+    cursor = conn.cursor()
+    
+    # Fetch name and ID of the price category for the specified user
+    res = list(cursor.execute("""
+        SELECT Preiskategorie.name, Preiskategorie.ID_preis 
+        FROM Preiskategorie 
+        JOIN BenutzerPreiskategorie ON Preiskategorie.ID_preis = BenutzerPreiskategorie.ID_preis 
+        WHERE BenutzerPreiskategorie.ID_benutzer = ?
+    """, (bid,)))
+    
+    conn.close()  
+    print(res)
+    
+    if res:
+        formatted_results = []
+        for row in res:
+            name, preis_id = row  # Unpack the tuple
+            formatted_results.append(f"{name}: ID {preis_id}")  # Show the name and ID
+        return "\n".join(formatted_results)  # Join results into a single string
+    else:
+        return "Keine Preiskategorie gefunden"
