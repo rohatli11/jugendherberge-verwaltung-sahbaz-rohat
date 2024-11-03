@@ -46,12 +46,12 @@ def get_zimmer_for_jugendherberge(jid, pid):
   conn = sqlite3.connect(data_files['jugendherbergen_verwaltung.db'])
   cursor = conn.cursor()
   res = list(cursor.execute("""
-          SELECT zimmernummer, bettenanzahl, Preiskategorie.name 
-          FROM Zimmer 
-          JOIN Preiskategorie ON Zimmer.ID_preis = Preiskategorie.ID_preis 
-          WHERE ID_jugendh = ? AND Zimmer.ID_preis = ?
-      """, (jid, pid)))    
-  conn.close()
+      SELECT zimmernummer, bettenanzahl, Preiskategorie.name 
+      FROM Zimmer 
+      JOIN Preiskategorie ON Zimmer.ID_preis = Preiskategorie.ID_preis 
+      WHERE ID_jugendh = ? AND Zimmer.ID_preis = ? AND gebucht = 0
+  """, (jid, pid)))   
+  
   return res
 
 
@@ -126,6 +126,12 @@ def add_booking(startzeit, endzeit, preis, zimmer_id, benutzer_id):
         INSERT INTO Buchung (startzeit, endzeit, preis, ID_zimmer, ID_benutzer) 
         VALUES (?, ?, ?, ?, ?)
     ''', (startzeit, endzeit, preis, zimmer_id, benutzer_id))
+
+    cursor.execute('''
+        UPDATE Zimmer
+        SET gebucht = 1
+        WHERE ID_zimmer = ?
+    ''', (zimmer_id,))
     conn.commit()
     conn.close()
 
