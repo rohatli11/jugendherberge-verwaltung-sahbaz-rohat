@@ -93,6 +93,11 @@ class Startseite(StartseiteTemplate):
           if zimmer_id:
             anvil.server.call('add_booking', start_date, end_date, preis, zimmer_id[0], self.benutzer_drop_down.selected_value)
             print(f"Buchung hinzugefügt für Zimmernummer {zimmer_num.text} mit ID {zimmer_id[0]}")
+            self.start_datum_picker.date = None  
+            self.end_datum_picker.date = None  
+            self.benutzer_drop_down.selected_value = None
+            self.jugendherberge_drop_down.selected_value = None
+            
           else:
             alert(f"Zimmer-ID für Zimmernummer {zimmer_num} konnte nicht gefunden werden.")
 
