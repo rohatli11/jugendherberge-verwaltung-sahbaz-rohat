@@ -73,7 +73,7 @@ class Startseite(StartseiteTemplate):
   def button_buchen_click(self, **event_args):
   
     if (self.benutzer_drop_down.selected_value is not None and self.jugendherberge_drop_down.selected_value is not None and self.start_datum_picker.date is not None and self.end_datum_picker.date is not None):
-
+      print(self.benutzer_drop_down.selected_value)
       preiskategorie_data = anvil.server.call('get_preiskategorie_for_benutzer', self.benutzer_drop_down.selected_value)
       preiskategorie_number = int(preiskategorie_data.split(":")[1].replace("€", "").strip())
         
@@ -95,8 +95,9 @@ class Startseite(StartseiteTemplate):
             print(f"Buchung hinzugefügt für Zimmernummer {zimmer_num.text} mit ID {zimmer_id[0]}")
             self.start_datum_picker.date = None  
             self.end_datum_picker.date = None  
-            self.benutzer_drop_down.selected_value = None
-            self.jugendherberge_drop_down.selected_value = None
+            self.benutzer_drop_down.selected_value = 1
+            self.jugendherberge_drop_down.selected_value = 1
+            self.repeating_panel_1.items = []
             
           else:
             alert(f"Zimmer-ID für Zimmernummer {zimmer_num} konnte nicht gefunden werden.")
