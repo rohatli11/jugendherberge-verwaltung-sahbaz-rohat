@@ -66,10 +66,10 @@ def get_preiskategorie_for_benutzer(bid):
     if res:
         formatted_results = []
         for row in res:
-            name, preiskategorie = row  # Unpack the tuple
+            name, preiskategorie = row 
             preiskategorie = int(preiskategorie)
             formatted_results.append(f"{name}: {preiskategorie}€")
-        return "\n".join(formatted_results)  # Join results into a single string
+        return "\n".join(formatted_results) 
     else:
         return "Keine Preiskategorie gefunden"
 
