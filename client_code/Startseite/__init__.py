@@ -88,7 +88,7 @@ class Startseite(StartseiteTemplate):
       
         preis = int(days) * preiskategorie_number
         
-        if check_buchung.selected:
+        if check_buchung.checked:
           zimmer_id = anvil.server.call('get_zimmerid_from_zimmernummer', int(zimmer_num.text))
           if zimmer_id:
             anvil.server.call('add_booking', start_date, end_date, preis, zimmer_id[0], self.benutzer_drop_down.selected_value)

@@ -1,7 +1,7 @@
 components:
 - layout_properties: {column: NKSIYH}
-  name: radio_button_1
+  name: check_buchung
   properties: {text: ''}
-  type: RadioButton
+  type: CheckBox
 container: {type: DataRowPanel}
 is_package: true
