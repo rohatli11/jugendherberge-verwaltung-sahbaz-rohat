@@ -4,7 +4,7 @@ import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 import anvil.server
-
+from datetime import date
 
 class Startseite(StartseiteTemplate):
   def __init__(self, **properties):
@@ -53,15 +53,25 @@ class Startseite(StartseiteTemplate):
   def button_check_dates_click(self, **event_args):
     start_date = self.start_datum_picker.date
     end_date = self.end_datum_picker.date
-  
-    if end_date and start_date:  
-        if end_date <= start_date:
-            alert("Das Enddatum muss später als das Startdatum sein.")
-            self.end_datum_picker.date = None  
-        else:
-            formatted_start_date = start_date.strftime("%Y-%m-%d")
-            formatted_end_date = end_date.strftime("%Y-%m-%d")
-            print(f"Startdatum: {formatted_start_date}, Enddatum: {formatted_end_date}")
+    today = date.today()
+    
+    if start_date and start_date < today:
+        alert("Das Startdatum muss in der Zukunft liegen.")
+        self.start_datum_picker.date = None
+        return
+
+    if end_date and end_date < today:
+        alert("Das Enddatum muss in der Zukunft liegen.")
+        self.end_datum_picker.date = None
+        return
+
+    if end_date and start_date and end_date <= start_date:
+        alert("Das Enddatum muss später als das Startdatum sein.")
+        self.end_datum_picker.date = None
+    else:
+        formatted_start_date = start_date.strftime("%Y-%m-%d")
+        formatted_end_date = end_date.strftime("%Y-%m-%d")
+        print(f"Startdatum: {formatted_start_date}, Enddatum: {formatted_end_date}")
 
   def benutzer_drop_down_change(self, **event_args):
     """This method is called when an item is selected"""
