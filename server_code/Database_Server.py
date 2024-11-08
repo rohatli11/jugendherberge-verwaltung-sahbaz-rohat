@@ -119,7 +119,9 @@ def get_preiskategorie_for_zimmer(bid):
 
 
 @anvil.server.callable
-def add_booking(startzeit, endzeit, preis, zimmer_id, benutzer_id):
+def add_booking(startzeit, endzeit, preis, zimmer_id, benutzer_id, gast_vorname):
+    anvil.server.call('handle_guest_booking', benutzer_id, gast_vorname)
+
     conn = sqlite3.connect(data_files['jugendherbergen_verwaltung.db'])
     cursor = conn.cursor()
     cursor.execute('''
@@ -135,4 +137,23 @@ def add_booking(startzeit, endzeit, preis, zimmer_id, benutzer_id):
     conn.commit()
     conn.close()
 
+
+@anvil.server.callable
+def handle_guest_booking(benutzer_id, gast_vorname):
+    conn = sqlite3.connect(data_files['jugendherbergen_verwaltung.db'])
+    cursor = conn.cursor()
+    cursor.execute("SELECT ID_gast, ID_user FROM Gast WHERE vorname = ?", (gast_vorname,))
+    gast = cursor.fetchone()
+
+    if gast:
+        gast_id, fk_user = gast
+        if fk_user is None:
+            cursor.execute("UPDATE Gast SET ID_user = ? WHERE ID_gast = ?", (benutzer_id, gast_id))
+            print(f"Gast {gast_vorname} wurde Benutzer-ID {benutzer_id} zugeordnet.")
+    else:
+        cursor.execute("INSERT INTO Gast (vorname, ID_user) VALUES (?, ?)", (gast_vorname, benutzer_id))
+        print(f"Neuer Gast {gast_vorname} mit Benutzer-ID {benutzer_id} wurde hinzugefügt.")
+    
+    conn.commit()
+    conn.close()
 

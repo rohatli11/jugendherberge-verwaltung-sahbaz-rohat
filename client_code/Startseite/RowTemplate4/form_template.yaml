@@ -1,6 +1,6 @@
 components:
 - layout_properties: {column: VJQQOR}
-  name: check_box_1
+  name: guest_button
   properties: {text: ''}
   type: CheckBox
 container: {type: DataRowPanel}

@@ -96,23 +96,25 @@ class Startseite(StartseiteTemplate):
         check_buchung = row.get_components()[0]
         bett_anzahl = row.get_components()[2]
         zimmer_num = row.get_components()[1]
-      
         preis = int(days) * preiskategorie_number
         
         if check_buchung.checked:
-          for guest in self.repeating_panel_guest.get_components():
-            print(guest.get_components()[0].text)
-            print(guest.get_components()[1].text)
-            zimmer_id = anvil.server.call('get_zimmerid_from_zimmernummer', int(zimmer_num.text))
-            if zimmer_id:
-              anvil.server.call('add_booking', start_date, end_date, preis, zimmer_id[0], self.benutzer_drop_down.selected_value)
-              print(f"Buchung hinzugefügt für Zimmernummer {zimmer_num.text} mit ID {zimmer_id[0]}")
-              self.start_datum_picker.date = None  
-              self.end_datum_picker.date = None  
-              self.benutzer_drop_down.selected_value = 1
-              self.jugendherberge_drop_down.selected_value = 1
-              self.repeating_panel_1.items = []
-              
+          for guest_row in self.repeating_panel_guest.get_components():
+            guest_button = guest_row.guest_button  
+            guest_name = guest_row.get_components()[1].text
+
+            if guest_button.checked:
+                print(f"Gast ausgewählt: {guest_name}")
+                zimmer_id = anvil.server.call('get_zimmerid_from_zimmernummer', int(zimmer_num.text))
+                if zimmer_id:
+                  anvil.server.call('add_booking', start_date, end_date, preis, zimmer_id[0], self.benutzer_drop_down.selected_value, guest_name)
+                  print(f"Buchung hinzugefügt für Zimmernummer {zimmer_num.text} mit ID {zimmer_id[0]}")
+                  self.start_datum_picker.date = None  
+                  self.end_datum_picker.date = None  
+                  self.benutzer_drop_down.selected_value = 1
+                  self.jugendherberge_drop_down.selected_value = 1
+                  self.repeating_panel_1.items = []
+                  
             else:
               alert(f"Zimmer-ID für Zimmernummer {zimmer_num} konnte nicht gefunden werden.")
 
