@@ -21,33 +21,22 @@ class Startseite(StartseiteTemplate):
     
   def load_guests(self, **event_args):
     guests_data = anvil.server.call('get_all_guests')
-
     guests_items = []
-    
     for guest in guests_data:
-        guests_items.append({'name_gast': guest[0]})  # Hier holen wir nur den Namen
-
+        guests_items.append({'name_gast': guest[0]}) 
     self.repeating_panel_guest.items = guests_items
-    
  
   def load_rooms(self, **event_args):
     selected_benutzer = self.benutzer_drop_down.selected_value
-
     preiskategorie_data = anvil.server.call('get_preiskategorie_for_zimmer', selected_benutzer)
-    
     preiskategorie_id = int(preiskategorie_data.split("ID ")[-1])
-  
     jid = self.jugendherberge_drop_down.items[self.jugendherberge_drop_down.selected_value - 1][1]
-    
-    # Call the server to get rooms that match the user's price category
     data = anvil.server.call("get_zimmer_for_jugendherberge", jid, preiskategorie_id)
 
     new_row = []
-        
     for eintrag in data:
-        add = {'zimmerNR': eintrag[0], 'BettAZ': eintrag[1], 'PreisPN': eintrag[2]}  # Price is now included
+        add = {'zimmerNR': eintrag[0], 'BettAZ': eintrag[1], 'PreisPN': eintrag[2]}
         new_row.append(add)
-    
     self.repeating_panel_1.items = new_row
 
   def button_check_dates_click(self, **event_args):
@@ -69,9 +58,11 @@ class Startseite(StartseiteTemplate):
         alert("Das Enddatum muss später als das Startdatum sein.")
         self.end_datum_picker.date = None
     else:
-        formatted_start_date = start_date.strftime("%Y-%m-%d")
-        formatted_end_date = end_date.strftime("%Y-%m-%d")
-        print(f"Startdatum: {formatted_start_date}, Enddatum: {formatted_end_date}")
+        if start_date and end_date:
+            formatted_start_date = start_date.strftime("%Y-%m-%d")
+            formatted_end_date = end_date.strftime("%Y-%m-%d")
+            print(f"Startdatum: {formatted_start_date}, Enddatum: {formatted_end_date}")
+        
 
   def benutzer_drop_down_change(self, **event_args):
     """This method is called when an item is selected"""
@@ -109,7 +100,6 @@ class Startseite(StartseiteTemplate):
               if zimmer_id:
                 anvil.server.call('add_booking', start_date, end_date, preis, zimmer_id[0], self.benutzer_drop_down.selected_value, guest_name)
                 print(f"Buchung hinzugefügt für Zimmernummer {zimmer_num.text} mit ID {zimmer_id[0]}")
-                anvil.server.call('get_guest')
                 self.start_datum_picker.date = None  
                 self.end_datum_picker.date = None  
                 self.benutzer_drop_down.selected_value = 1
@@ -117,8 +107,6 @@ class Startseite(StartseiteTemplate):
                 self.repeating_panel_1.items = []  
               else:
                 alert(f"Zimmer-ID für Zimmernummer {zimmer_num} konnte nicht gefunden werden.")
-            
-
     else:
         alert("Bitte füllen Sie alle erforderlichen Felder aus.", title="Fehlende Informationen")
 
