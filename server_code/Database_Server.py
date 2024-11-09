@@ -13,8 +13,6 @@ import sqlite3
 # them with @anvil.server.callable.
 # Here is an example - you can replace it with your own:
 #
-
-
 @anvil.server.callable
 def get_jugendherbergen():
   conn = sqlite3.connect(data_files['jugendherbergen_verwaltung.db'])
@@ -139,16 +137,16 @@ def add_booking(startzeit, endzeit, preis, zimmer_id, benutzer_id, gast_vorname)
 
 @anvil.server.callable
 def handle_guest_booking(benutzer_id, gast_vorname):
-    conn = sqlite3.connect(data_files['jugendherbergen_verwaltung.db'])
-    cursor = conn.cursor()
-    cursor.execute("SELECT ID_gast, ID_user FROM Gast WHERE vorname = ?", (gast_vorname,))
-    gast = cursor.fetchone()
-    if gast:
-        gast_id, fk_user = gast
-        cursor.execute("UPDATE Gast SET ID_user = ? WHERE ID_gast = ?", (benutzer_id, gast_id))
-    else:
-        cursor.execute("INSERT INTO Gast (vorname, ID_user) VALUES (?, ?)", (gast_vorname, benutzer_id))
+  conn = sqlite3.connect(data_files['jugendherbergen_verwaltung.db'])
+  cursor = conn.cursor()
+  cursor.execute("SELECT ID_gast, ID_benutzer FROM Gast WHERE vorname = ?", (gast_vorname,))
+  gast = cursor.fetchone()
+  if gast:
+      gast_id, fk_user = gast
+      cursor.execute("UPDATE Gast SET ID_benutzer = ? WHERE ID_gast = ?", (benutzer_id, gast_id))
+  else:
+      cursor.execute("INSERT INTO Gast (vorname, ID_benutzer) VALUES (?, ?)", (gast_vorname, benutzer_id))
 
-    conn.commit()
-    conn.close()
+  conn.commit()
+  conn.close()
 
